@@ -1,0 +1,50 @@
+﻿#複数のPDFを１つに結合
+#全てのPDFを同じフォルダに入れておく
+#フォルダをターミナルで開く
+#新規に作成する結合ファイルの後に結合するファイル名（pdf1･･･）
+gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=merge_fig.pdf 01.pdf 02.pdf 03.pdf 04.pdf 05.pdf 06.pdf 07.pdf 08.pdf 09.pdf 10.pdf 11.pdf 12.pdf 13.pdf 14.pdf 15.pdf 16.pdf 17.pdf 18.pdf
+
+#PDFの編集_ pdftkを使う
+#インストール
+sudo apt-get install pdftk
+
+#3ページ目を抽出
+pdftk H24hakkutu.pdf cat 61 output Tatejo_Matumae.pdf
+
+#結合
+pdftk 01.pdf 02.pdf cat output merge.pdf
+
+#回転
+pdftk ino.pdf cat 1-endleft output 井野長割遺跡基本計画.pdf
+
+#例えば2ページだけ270°回転させて抽出させたい場合
+pdftk チラシ.pdf cat 1left output チラシ2.pdf
+
+
+
+#2頁〜9ページを抽出
+pdftk H24hakkutu.pdf cat 58-86 output cut_hakkutu.pdf
+
+#20ページを抽出
+pdftk kouhou.pdf cat 3 output 01.pdf
+
+#頁を削除する_１〜４頁を削除
+pdftk 05コース.pdf cat 2 output 05コース図面.pdf
+
+
+#PDFファイルのサイズを圧縮する_Ghostscriptを使う
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/default -dNOPAUSE -dQUIET -dBATCH -dColorImageFilter=/FlateEncode -sOutputFile=s_地質の日地図ver1.pdf 地質の日地図ver1.pdf
+
+#pdf1.6のファイルを1.4に変換
+dvipdfmx -V 4 -o esaki_yoko_14.pdf esaki_yoko.pdf
+
+#ディレクトリ内のPDFを全部結合
+pdftk *.pdf cat output combined.pdf
+
+#pdfcropで任意の範囲をクロップする。単位はbp、「左 上 右 下」の順
+pdfcrop --margins '-610 -15 -20 -50' 01.pdf kaigo.pdf
+
+#頁の挿入
+pdftk A=180727箱館戦争に消えた謎の館城.pdf B=blankA4.pdf cat A1 B A2-end output blank_merge.pdf
+
+
